@@ -24,7 +24,7 @@ const SignIn: React.FC = () => {
           password: password,
         },
       );
-    if(response?.data.email==="shoaibzaki84@gmail.com"){
+    if(response?.data.email==="user1@gmail.com"){
     }
       // If successful, handle the response (e.g., store the JWT token, redirect, etc.)
       toast.success("User logged in successfully")
@@ -42,7 +42,8 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <DefaultLayout>
+    // <DefaultLayout>
+      <>
       <Breadcrumb pageName="Sign In" />
 
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -194,7 +195,8 @@ const SignIn: React.FC = () => {
           </div>
         </div>
       </div>
-    </DefaultLayout>
+      </>
+    // </DefaultLayout>
   );
 };
 
