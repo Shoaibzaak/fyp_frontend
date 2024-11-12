@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -6,15 +5,21 @@ import { Package } from "@/types/package";
 
 const TableThree = () => {
   // Define the Job type
-type Job = {
-  id: string;
-  title: string;
-  company: string;
-  jobType: string;
-  salary: string;
-};
+  type Job = {
+    id: string;
+    title: string;
+    company: string;
+    jobType: string;
+    salary: string;
+    address: string;
+    education: string;
+    experience: string;
+  };
   const [jobsData, setJobs] = useState<Job[]>([]);
-
+  const [searchTerm, setSearchTerm] = useState('');
+  const filteredJobs = jobsData.filter((job) =>
+    job.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   useEffect(() => {
     axios
       .get("http://localhost:1337/api/jobs?populate=*")
@@ -23,7 +28,8 @@ type Job = {
           title: job.attributes.title,
           jobType: job.attributes.job_Type,
           salary: job.attributes.salary,
-          company: job.attributes.company.data.attributes.name,
+          education: job.attributes.education,
+          experience: job.attributes.experience,
         }));
         setJobs(fetchedJobs); // Store the job data in state
       })
@@ -34,24 +40,66 @@ type Job = {
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+       <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by job title..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full rounded-md border border-gray-300 px-4 py-2 dark:border-strokedark dark:bg-boxdark dark:text-white focus:outline-none"
+        />
+      </div>
+      <div className="mb-4 flex space-x-4">
+        <label className="inline-flex items-center">
+          <input
+            type="checkbox"
+            className="form-checkbox h-5 w-5 text-blue-600"
+          />
+          <span className="text-gray-700 dark:text-gray-200 ml-2">
+            job type
+          </span>
+        </label>
+        <label className="inline-flex items-center">
+          <input
+            type="checkbox"
+            className="form-checkbox h-5 w-5 text-blue-600"
+          />
+          <span className="text-gray-700 dark:text-gray-200 ml-2">
+            education
+          </span>
+        </label>
+        <label className="inline-flex items-center">
+          <input
+            type="checkbox"
+            className="form-checkbox h-5 w-5 text-blue-600"
+          />
+          <span className="text-gray-700 dark:text-gray-200 ml-2">
+            experience
+          </span>
+        </label>
+      </div>
+
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
-              Title
+                Title
               </th>
               <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
-              Job_Type
+                Job_Type
               </th>
               <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
-               Salary
+                Salary
               </th>
               <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
-               Company_Name
+                Education
               </th>
-              {/* <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
-                Status
+              <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
+                Experience
+              </th>
+              {/* <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
+               Experience
               </th> */}
               <th className="px-4 py-4 font-medium text-black dark:text-white">
                 Actions
@@ -59,7 +107,8 @@ type Job = {
             </tr>
           </thead>
           <tbody>
-            {jobsData.map((packageItem, key) => (
+
+            { filteredJobs?.length>0 && filteredJobs.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -79,9 +128,19 @@ type Job = {
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.company}
+                    {packageItem.education}
                   </h5>
                 </td>
+                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+                  <h5 className="font-medium text-black dark:text-white">
+                    {packageItem?.experience}
+                  </h5>
+                </td>
+                {/* <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+                  <h5 className="font-medium text-black dark:text-white">
+                    {packageItem.experience}
+                  </h5>
+                </td> */}
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
                     <button className="hover:text-primary">
