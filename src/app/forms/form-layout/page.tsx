@@ -8,7 +8,8 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
 import SelectGroupThree from "@/components/SelectGroup/SelectGroupThree";
 import SelectGroupFour from "@/components/SelectGroup/SelectGroupFour";
-
+import AuthGaurd from "../../../components/AuthGaurd"
+import {BaseUrl} from "../../../components/Constants"
 // export const metadata = {
 //   title: "job portal",
 //   description: "job portal",
@@ -39,9 +40,8 @@ const FormLayout = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData,'formdata in the submit++=')
     try {
-      const response = await axios.post("http://localhost:1337/api/jobs", {
+      const response = await axios.post(`${BaseUrl}/api/jobs`, {
         data: formData,
       });
       if(response?.status==200){
@@ -68,6 +68,7 @@ const FormLayout = () => {
   };
 
   return (
+    <AuthGaurd>
     <DefaultLayout>
       <Breadcrumb pageName="ApplyJob" />
 
@@ -127,6 +128,7 @@ const FormLayout = () => {
       </div>
       <ToastContainer />
     </DefaultLayout>
+    </AuthGaurd>
   );
 };
 
