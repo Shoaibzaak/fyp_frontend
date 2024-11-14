@@ -15,7 +15,7 @@ const Upload = () => {
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Settings" />
 
-        <div className=" grid grid-cols-5 gap-8">
+        <div className="flex max-h-screen items-center justify-center px-6 py-12 lg:px-8">
           <div className="col-span-5 xl:col-span-2">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
