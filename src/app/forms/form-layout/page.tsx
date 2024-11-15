@@ -28,10 +28,10 @@ const FormLayout = () => {
     education: "",
     industry: "",
     experience: "",
-    company:"",
+    company: "",
   });
   // console.log(formData,"formdatta")
-  console.log(selectedfive, "selectedfive");
+  // console.log(selectedfive, "selectedfive");
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -46,10 +46,18 @@ const FormLayout = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${BaseUrl}/api/jobs`, {
-        data: formData,
-      });
-      if (response?.status == 200) {
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMxMzU5MDkyLCJleHAiOjE3MzM5NTEwOTJ9.7Le_f4PdkjTSOc4Ffcnc0FlT8s2k9uox9fRQxRZJZwY";
+      const response = await axios.post(
+        `${BaseUrl}/api/jobs`,
+        { data: formData },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (response?.status === 200) {
         toast.success("Job created successfully!", {
           position: "top-right",
         });
@@ -64,7 +72,7 @@ const FormLayout = () => {
           job_Type: selectedOptionThree,
           education: selectedOptionOne,
           industry: selectedOptionFour,
-          company:selectedfive
+          company: selectedfive,
         });
       }
     } catch (error) {
@@ -109,7 +117,7 @@ const FormLayout = () => {
                     </label>
                     <input
                       type="number"
-                      name="title"
+                      name="experience"
                       value={formData.experience}
                       onChange={handleInputChange}
                       placeholder="Enter experience"
