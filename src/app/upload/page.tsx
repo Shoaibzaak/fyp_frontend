@@ -1,8 +1,10 @@
+"use client";
+import React, { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import Image from "next/image";
-import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-
+import { toast,ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {BaseUrl} from "../../components/Constants"
 // export const metadata: Metadata = {
 //   title: "job portal",
 //   description:
@@ -10,6 +12,52 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 // };
 
 const Upload = () => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files; // Access the files from the input
+    if (files && files.length > 0) {
+      setSelectedFile(files[0]);
+    } else {
+      setSelectedFile(null); 
+    }
+  };
+  console.log(selectedFile,"selectedFile")
+  
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!selectedFile) {
+      alert("Please select a file first.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("files", selectedFile);
+
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMxNjg0NTkxLCJleHAiOjE3MzQyNzY1OTF9.1QsbIvYe4k1Yt3aJX1bzfRpJeRijdVrphp0CACvPLIU";
+      const response = await fetch(`${BaseUrl}/api/upload/`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        toast.success("File uploaded successfully!");
+        console.log(data);
+      } else {
+        toast.error("Failed to upload file.");
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
@@ -24,7 +72,7 @@ const Upload = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <form action="#">
+                <form onSubmit={handleSubmit}>
                   <div className="mb-4 flex items-center gap-3">
                     {/* <div className="h-14 w-14 rounded-full">
                       <Image
@@ -56,7 +104,9 @@ const Upload = () => {
                     <input
                       type="file"
                       accept="image/*"
+                      name="files"
                       className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
+                      onChange={handleFileChange}
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">
                       <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
@@ -107,7 +157,7 @@ const Upload = () => {
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
                     >
-                      Save
+                      upload
                     </button>
                   </div>
                 </form>
@@ -116,6 +166,7 @@ const Upload = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </DefaultLayout>
   );
 };
