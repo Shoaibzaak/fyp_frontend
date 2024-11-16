@@ -30,7 +30,7 @@ const SignIn: React.FC = () => {
       toast.success("User logged in successfully")
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("email", JSON.stringify(response.data.user.email));
-      localStorage.setItem("user_creater", JSON.stringify(response.data.job_creater));
+      localStorage.setItem("user_creater", JSON.stringify(response.data.user.job_creater));
       localStorage.setItem("jwt", response.data.jwt);
       router.push('http://localhost:3000/forms/form-layout')
       console.log("User authenticated:", response.data);

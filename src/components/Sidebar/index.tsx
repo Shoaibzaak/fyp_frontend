@@ -152,6 +152,7 @@ const menuGroups = [
           // { label: "Form Elements", route: "/forms/form-elements" },
           { label: "Apply-Job", route: "/forms/form-layout" },
         ],
+        visibleForCreator:true
       },
       {
         icon: (
@@ -348,7 +349,16 @@ const menuGroups = [
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
-
+  const [userCreator, setUserCreator] = useState(false);
+  console.log(userCreator,"userCreator")
+  useEffect(() => {
+    // Retrieve the value from localStorage
+    const storedUserCreator = localStorage.getItem("user_creater");
+    console.log(storedUserCreator,"storedUserCreator")
+    setUserCreator(storedUserCreator === "true");
+  }, []);
+  const filteredMenuItems = menuGroups[0].menuItems.filter(item => item.visibleForCreator === true);
+  console.log(filteredMenuItems,"filteredMenuItems")
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
