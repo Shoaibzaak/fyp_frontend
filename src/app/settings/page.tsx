@@ -1,15 +1,103 @@
+"use client";
+import React, { useState,useEffect} from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-
+import axios from "axios";
 // export const metadata: Metadata = {
 //   title: "job portal",
 //   description:
 //     "job portal",
 // };
-
+interface Userinfo   {
+  username: string;
+  bio: string;
+  phone: number;
+  email: string;
+}
 const Settings = () => {
+  const [userData, setUserData] = useState(0);
+  const [id, setId] = useState(null);
+  const [data, setData] = useState<Userinfo | null>({
+    username: '',
+    bio: '',
+    phone: 0,
+    email: '',
+  });
+  const [token, setToken] = useState("");
+  const [formData, setFormData] = useState(null);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  console.log(userData, "userData");
+  console.log(token, "token");
+  console.log(data, "data");
+
+  useEffect(() => {
+    const userDataFromLocalStorage = localStorage.getItem("user");
+    const tokenFromLocalStorage = localStorage.getItem("jwt");
+
+    if (userDataFromLocalStorage) {
+      setUserData(JSON.parse(userDataFromLocalStorage)); 
+    }
+
+    if (tokenFromLocalStorage) {
+      setToken(tokenFromLocalStorage); 
+    }
+
+    if (userDataFromLocalStorage && tokenFromLocalStorage) {
+      const parsedUserData = JSON.parse(userDataFromLocalStorage);
+      const userId = parsedUserData.id; 
+      setId(userId)
+      axios
+        .get(`http://localhost:1337/api/users/${userId}`, { 
+          headers: {
+            Authorization: `Bearer ${tokenFromLocalStorage}`, 
+          },
+        })
+        .then((response) => {
+          setData(response.data); 
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }
+  }, []); 
+  const handleSubmit = async (e: React.FormEvent) => {
+    const userData={
+      username:data?.username,
+      email:data?.email,
+      phone:data?.phone,
+      bio:data?.bio
+
+    }
+    e.preventDefault();
+    if (!token) {
+      console.error("No token found.");
+      return;
+    }
+    try {
+      const response = await axios.put(
+        `http://localhost:1337/api/users/${id}`,
+        userData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("User data updated:", response.data);
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
+  };
+  
+  if (!data) {
+    return <div>Loading...</div>; // Show loading while data is being fetched
+  }
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-300">
@@ -24,7 +112,7 @@ const Settings = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <form action="#">
+                <form  onSubmit={handleSubmit}>
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-1/2">
                       <label
@@ -62,10 +150,11 @@ const Settings = () => {
                         <input
                           className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                           type="text"
-                          name="fullName"
+                          name="username"
                           id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          placeholder="fullName"
+                          value={data?.username}
+                         onChange={handleInputChange}
                         />
                       </div>
                     </div>
@@ -79,11 +168,12 @@ const Settings = () => {
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phoneNumber"
+                        type="number"
+                        name="phone"
                         id="phoneNumber"
                         placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        value={data?.phone}
+                        onChange={handleInputChange}
                       />
                     </div>
                   </div>
@@ -124,15 +214,16 @@ const Settings = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="email"
-                        name="emailAddress"
+                        name="email"
                         id="emailAddress"
                         placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        value={data?.email}
+                        onChange={handleInputChange}
                       />
                     </div>
                   </div>
 
-                  <div className="mb-5.5">
+                  {/* <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
@@ -147,7 +238,7 @@ const Settings = () => {
                       placeholder="devidjhon24"
                       defaultValue="devidjhon24"
                     />
-                  </div>
+                  </div> */}
 
                   <div className="mb-5.5">
                     <label
@@ -188,14 +279,14 @@ const Settings = () => {
                         </svg>
                       </span>
 
-                      <textarea
+                      <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         name="bio"
                         id="bio"
-                        rows={6}
+                        onChange={handleInputChange}
                         placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
-                      ></textarea>
+                        value={data?.bio}
+                      ></input>
                     </div>
                   </div>
 
@@ -210,7 +301,7 @@ const Settings = () => {
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
                     >
-                      Save
+                      Update
                     </button>
                   </div>
                 </form>
