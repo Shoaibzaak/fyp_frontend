@@ -10,16 +10,16 @@ import axios from "axios";
 //   description:
 //     "job portal",
 // };
-interface Userinfo   {
-  username: string;
-  bio: string;
-  phone: number;
-  email: string;
-}
+// interface Userinfo   {
+//   username: string;
+//   bio: string;
+//   phone: number;
+//   email: string;
+// }
 const Settings = () => {
   const [userData, setUserData] = useState(0);
   const [id, setId] = useState(null);
-  const [data, setData] = useState<Userinfo | null>({
+  const [data, setData] = useState({
     username: '',
     bio: '',
     phone: 0,
@@ -27,11 +27,13 @@ const Settings = () => {
   });
   const [token, setToken] = useState("");
   const [formData, setFormData] = useState(null);
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
-
+  
   console.log(userData, "userData");
   console.log(token, "token");
   console.log(data, "data");
@@ -151,8 +153,8 @@ const Settings = () => {
                           className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                           type="text"
                           name="username"
-                          id="fullName"
-                          placeholder="fullName"
+                          id="username"
+                          placeholder="username"
                           value={data?.username}
                          onChange={handleInputChange}
                         />
@@ -170,7 +172,7 @@ const Settings = () => {
                         className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="number"
                         name="phone"
-                        id="phoneNumber"
+                        id="phone"
                         placeholder="+990 3343 7865"
                         value={data?.phone}
                         onChange={handleInputChange}
@@ -215,7 +217,7 @@ const Settings = () => {
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="email"
                         name="email"
-                        id="emailAddress"
+                        id="email"
                         placeholder="devidjond45@gmail.com"
                         value={data?.email}
                         onChange={handleInputChange}
@@ -279,14 +281,15 @@ const Settings = () => {
                         </svg>
                       </span>
 
-                      <input
+                      <textarea
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         name="bio"
                         id="bio"
                         onChange={handleInputChange}
                         placeholder="Write your bio here"
+                        rows={6}
                         value={data?.bio}
-                      ></input>
+                      ></textarea>
                     </div>
                   </div>
 
