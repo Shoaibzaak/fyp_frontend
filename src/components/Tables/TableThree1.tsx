@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Package } from "@/types/package";
 
-const TableThree = () => {
+const TableThree1 = () => {
   // Define the Job type
   type Job = {
     id: string;
@@ -16,9 +16,9 @@ const TableThree = () => {
     experience: string;
   };
   const [jobsData, setJobs] = useState<Job[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const filteredJobs = jobsData.filter((job) =>
-    job.title.toLowerCase().includes(searchTerm.toLowerCase())
+    job.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
   useEffect(() => {
     axios
@@ -40,13 +40,13 @@ const TableThree = () => {
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-       <div className="mb-4">
+      <div className="mb-4">
         <input
           type="text"
           placeholder="Search by job title..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-4 py-2 dark:border-strokedark dark:bg-boxdark dark:text-white focus:outline-none"
+          className="border-gray-300 w-full rounded-md border px-4 py-2 focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white"
         />
       </div>
       {/* <div className="mb-4 flex space-x-4">
@@ -101,68 +101,74 @@ const TableThree = () => {
               {/* <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
                Experience
               </th> */}
-              {/* <th className="px-4 py-4 font-medium text-black dark:text-white">
+              <th className="px-4 py-4 font-medium text-black dark:text-white">
                 Actions
-              </th> */}
+              </th>
             </tr>
           </thead>
           <tbody>
-
-            { filteredJobs?.length>0 && filteredJobs.map((packageItem, key) => (
-              <tr key={key}>
-                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.title}
-                  </h5>
-                </td>
-                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.jobType}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.salary}
-                  </h5>
-                  {/* <p className="text-sm">${packageItem.price}</p> */}
-                </td>
-                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.education}
-                  </h5>
-                </td>
-                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">
-                    {packageItem?.experience}
-                  </h5>
-                </td>
-                {/* <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+            {filteredJobs?.length > 0 &&
+              filteredJobs.map((packageItem, key) => (
+                <tr key={key}>
+                  <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {packageItem.title}
+                    </h5>
+                  </td>
+                  <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                    <p className="text-black dark:text-white">
+                      {packageItem.jobType}
+                    </p>
+                  </td>
+                  <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {packageItem.salary}
+                    </h5>
+                    {/* <p className="text-sm">${packageItem.price}</p> */}
+                  </td>
+                  <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {packageItem.education}
+                    </h5>
+                  </td>
+                  <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {packageItem?.experience}
+                    </h5>
+                  </td>
+                  {/* <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
                     {packageItem.experience}
                   </h5>
                 </td> */}
-                {/* <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                  <div className="flex items-center space-x-3.5">
-                    <button className="hover:text-primary">
-                      <svg
-                        className="fill-current"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 18 18"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                          fill=""
-                        />
-                        <path
-                          d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                          fill=""
-                        />
-                      </svg>
-                    </button>
-                    <button className="hover:text-primary">
+                  <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                    <div className="flex items-center space-x-3.5">
+                    <div className="relative group">
+  <button
+    className="hover:text-primary flex items-center"
+    aria-label="Apply for Job"
+    title="Apply for Job"
+  >
+    <svg
+      className="fill-current"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10-2h4v2h-4V4zm10 14H4v-8h16v8zm-8-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+        fill="currentColor"
+      />
+    </svg>
+  </button>
+  <span className="absolute left-full top-1/2 -translate-y-1/2 ml-2 text-sm text-gray-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    Apply
+  </span>
+</div>
+
+
+                      {/* <button className="hover:text-primary">
                       <svg
                         className="fill-current"
                         width="18"
@@ -207,11 +213,11 @@ const TableThree = () => {
                           fill=""
                         />
                       </svg>
-                    </button>
-                  </div>
-                </td> */}
-              </tr>
-            ))}
+                    </button> */}
+                    </div>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -219,4 +225,4 @@ const TableThree = () => {
   );
 };
 
-export default TableThree;
+export default TableThree1;

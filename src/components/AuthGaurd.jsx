@@ -9,7 +9,7 @@ const AuthGuard = ({ children }) => {
     const userData = localStorage.getItem("user");
     const parsedUser = userData ? JSON.parse(userData) : null;
 
-    if (parsedUser && parsedUser.email === "user1@gmail.com") {
+    if (parsedUser) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
