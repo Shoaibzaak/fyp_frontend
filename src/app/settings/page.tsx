@@ -4,6 +4,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import AuthGaurd from "../../components/AuthGaurd";  
 import axios from "axios";
 // export const metadata: Metadata = {
 //   title: "job portal",
@@ -101,6 +102,8 @@ const Settings = () => {
     return <div>Loading...</div>; // Show loading while data is being fetched
   }
   return (
+    <AuthGaurd>
+
     <DefaultLayout>
       <div className="mx-auto max-w-300">
         <Breadcrumb pageName="Settings" />
@@ -297,13 +300,13 @@ const Settings = () => {
                     <button
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="submit"
-                    >
+                      >
                       Cancel
                     </button>
                     <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
-                    >
+                      >
                       Update
                     </button>
                   </div>
@@ -314,6 +317,7 @@ const Settings = () => {
         </div>
       </div>
     </DefaultLayout>
+  </AuthGaurd>
   );
 };
 
