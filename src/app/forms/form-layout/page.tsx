@@ -45,9 +45,11 @@ const FormLayout = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const token = localStorage.getItem("jwt");
+    console.log(token,"token")
     try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMxMzU5MDkyLCJleHAiOjE3MzM5NTEwOTJ9.7Le_f4PdkjTSOc4Ffcnc0FlT8s2k9uox9fRQxRZJZwY";
+      // const token =
+      //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzM3MDU2MDA3LCJleHAiOjE3Mzk2NDgwMDd9.AKe-y6UAzqz1HY34Pq1LGhlQzWvuQUF3FCDLpD_W0ic";
       const response = await axios.post(
         `${BaseUrl}/api/jobs`,
         { data: formData },
@@ -85,14 +87,14 @@ const FormLayout = () => {
   return (
     <AuthGaurd>
       <DefaultLayout>
-        <Breadcrumb pageName="ApplyJob" />
+        <Breadcrumb pageName="CreateJob" />
 
         <div className="flex min-h-screen items-center justify-center px-6 py-12 lg:px-8">
           <div className="w-full max-w-3xl p-4">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Apply Job
+                  Create Job
                 </h3>
               </div>
               <form onSubmit={handleSubmit}>
@@ -160,7 +162,7 @@ const FormLayout = () => {
                     type="submit"
                     className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                   >
-                    Apply
+                    Create
                   </button>
                 </div>
               </form>

@@ -5,6 +5,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { toast,ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {BaseUrl} from "../../components/Constants"
+import AuthGaurd from "../../components/AuthGaurd";
 // export const metadata: Metadata = {
 //   title: "job portal",
 //   description:
@@ -36,7 +37,9 @@ const Upload = () => {
     formData.append("files", selectedFile);
 
     try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMxNjg0NTkxLCJleHAiOjE3MzQyNzY1OTF9.1QsbIvYe4k1Yt3aJX1bzfRpJeRijdVrphp0CACvPLIU";
+      const token = localStorage.getItem("jwt");
+      console.log(token,"token")
+      // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMxNjg0NTkxLCJleHAiOjE3MzQyNzY1OTF9.1QsbIvYe4k1Yt3aJX1bzfRpJeRijdVrphp0CACvPLIU";
       const response = await fetch(`${BaseUrl}/api/upload/`, {
         method: "POST",
         headers: {
@@ -59,6 +62,7 @@ const Upload = () => {
 
 
   return (
+    <AuthGaurd>
     <DefaultLayout>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Settings" />
@@ -168,6 +172,7 @@ const Upload = () => {
       </div>
       <ToastContainer />
     </DefaultLayout>
+    </AuthGaurd>
   );
 };
 

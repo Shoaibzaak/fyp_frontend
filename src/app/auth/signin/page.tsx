@@ -27,12 +27,18 @@ const SignIn: React.FC = () => {
     if(response?.data.email){
     }
       // If successful, handle the response (e.g., store the JWT token, redirect, etc.)
+      const {user}=response.data
+      console.log(user,"user")
       toast.success("User logged in successfully")
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("email", JSON.stringify(response.data.user.email));
       localStorage.setItem("user_creater", JSON.stringify(response.data.user.job_creater));
       localStorage.setItem("jwt", response.data.jwt);
-      router.push('http://localhost:3000/forms/form-layout')
+      if (user.job_creater) {
+        router.push("http://localhost:3000/forms/form-layout");
+      } else {
+        router.push("http://localhost:3000/upload");
+      }
       console.log("User authenticated:", response.data);
       
     } catch (error) {
